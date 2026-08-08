@@ -3,94 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lake Michigan Hang — Aug 21-23</title>
+<title>Lake Michigan — Fri&ndash;Sun, Aug 21&ndash;23</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="hero">
-  <div class="waves"></div>
-  <div class="hero-inner">
-    <p class="eyebrow">you're invited to the</p>
-    <h1>🌊 Lake Michigan Hang 🌊</h1>
-    <p class="subtitle">Friday Aug 21 &mdash; Sunday Aug 23</p>
-    <p class="tagline">Sun, water, and way too much food. Fill out the two things below so we can lock in a time and not end up with five bags of chips.</p>
-  </div>
-</header>
+<div class="sheet">
 
-<main>
+  <header class="hero">
+    <p class="eyebrow">Statement 01 / An Invitation</p>
+    <h1>LAKE<br>MICHIGAN</h1>
+    <p class="date-line">FRI&ndash;SUN, AUG 21&ndash;23</p>
+    <p class="intro">One afternoon at the lake, sometime between Friday and Sunday. No agenda beyond water, fire, and whoever brings food. Answer the two questions below so we can lock in when.</p>
+  </header>
+
+  <div class="callout">
+    <span class="callout-mark">&sect;</span>
+    <p class="callout-text">You know each other from a podcast about staying human, and Groucho, the dinner app that put a few of us in a room together. This is the outdoor version.</p>
+  </div>
 
   <!-- AVAILABILITY POLL -->
-  <section class="card" id="poll-section">
-    <h2>📅 When are you free?</h2>
-    <p class="card-sub">Tap every block that works for you, drop your name in, and hit submit. Already answered? Type your name again to update your answer.</p>
-
-    <div class="field-row">
-      <div class="field">
-        <label for="poll-name">Your name</label>
-        <input type="text" id="poll-name" placeholder="e.g. Dan" maxlength="40">
-      </div>
-      <div class="field field-narrow">
-        <label for="poll-guests">Bringing anyone else?</label>
-        <input type="number" id="poll-guests" placeholder="0" min="0" max="20" step="1">
-      </div>
-    </div>
-    <p class="field-hint">Just the extra people with you (kids, partner, +1s) — don't count yourself.</p>
+  <section class="section" id="poll-section">
+    <h2>01 &mdash; When Can You Show Up</h2>
+    <p class="section-sub">Mark every block that works. Name goes below. Already answered? Resubmit to update.</p>
 
     <div class="grid-wrap">
-      <div class="avail-grid" id="input-grid"></div>
+      <div id="input-grid" class="grid"></div>
     </div>
 
-    <button class="btn primary" id="submit-availability">Submit my availability</button>
+    <div class="form-row">
+      <input type="text" id="poll-name" placeholder="your name" maxlength="40">
+      <input type="number" id="poll-guests" placeholder="+guests" min="0" max="20" step="1">
+      <button class="btn btn-solid" id="submit-availability">Submit</button>
+    </div>
     <p class="status-msg" id="poll-status"></p>
 
-    <div class="divider"></div>
-
-    <div class="headcount-box">
-      <span class="headcount-number" id="headcount-number">0</span>
-      <span class="headcount-label">people headed to the lake so far</span>
+    <div class="headcount-block">
+      <p class="headcount-number" id="headcount-number">0</p>
+      <p class="headcount-label">people headed to the lake so far</p>
+      <p class="section-sub" id="responder-count">No responses yet.</p>
+      <div class="grid-wrap">
+        <div id="results-grid" class="grid"></div>
+      </div>
     </div>
-
-    <h3>🔥 Group overlap so far</h3>
-    <p class="card-sub" id="responder-count">No responses yet — be the first!</p>
-    <div class="grid-wrap">
-      <div class="avail-grid" id="results-grid"></div>
-    </div>
-    <p class="legend"><span class="swatch swatch-best"></span> best overlap &nbsp; <span class="swatch swatch-mid"></span> some overlap &nbsp; <span class="swatch swatch-none"></span> nobody yet</p>
   </section>
 
   <!-- POTLUCK -->
-  <section class="card" id="potluck-section">
-    <h2>🧺 Potluck sign-up</h2>
-    <p class="card-sub">Add what you're bringing. Check the list first so we don't get five bags of chips and zero drinks.</p>
-
-    <div class="field-row">
-      <div class="field">
-        <label for="potluck-name">Your name</label>
-        <input type="text" id="potluck-name" placeholder="e.g. Dan" maxlength="40">
-      </div>
-      <div class="field">
-        <label for="potluck-item">What are you bringing?</label>
-        <input type="text" id="potluck-item" placeholder="e.g. a cooler of drinks" maxlength="80">
-      </div>
-    </div>
-    <p class="dupe-warning" id="dupe-warning"></p>
-    <button class="btn primary" id="submit-potluck">Add to the list</button>
-    <p class="status-msg" id="potluck-status"></p>
-
-    <div class="divider"></div>
+  <section class="section" id="potluck-section">
+    <h2>02 &mdash; What You're Bringing</h2>
 
     <ul class="potluck-list" id="potluck-list"></ul>
-    <p class="card-sub" id="potluck-empty">Nothing on the list yet — add the first item!</p>
+    <p class="section-sub" id="potluck-empty">Nothing on the list yet.</p>
+
+    <div class="form-row">
+      <input type="text" id="potluck-name" placeholder="your name" maxlength="40">
+      <input type="text" id="potluck-item" placeholder="what you're bringing" maxlength="80">
+      <button class="btn btn-outline" id="submit-potluck">Add</button>
+    </div>
+    <p class="dupe-warning" id="dupe-warning"></p>
+    <p class="status-msg" id="potluck-status"></p>
   </section>
 
-</main>
+  <!-- GETTING THERE -->
+  <section class="section section-last">
+    <h2>03 &mdash; Getting There</h2>
+    <p class="callout-text">West Michigan shoreline. Exact address goes here once we lock a date. Two hours from Chicago, parking for eight cars, tents welcome.</p>
+  </section>
 
-<footer>
-  <p>made with 🍻 for the lake &middot; see you on the water</p>
-</footer>
+</div>
 
 <script type="module" src="app.js"></script>
 </body>
