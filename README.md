@@ -51,14 +51,7 @@ Easiest path: **GitHub Pages**, since you're already putting this in a GitHub re
 
 Alternatives that work just as well for a static site like this: drag-and-drop the folder onto [Netlify Drop](https://app.netlify.com/drop), or `vercel deploy` via the Vercel CLI.
 
-## 3. Fill in the remaining placeholders
-
-Two small placeholders in [`index.html`](index.html) still need real values (search for `REPLACE_WITH`) — the Spotify playlist is already wired up:
-
-1. **Team Human Patreon link** — replace `REPLACE_WITH_TEAM_HUMAN_PATREON_URL` with the real Patreon URL.
-2. **Groucho link** — replace `REPLACE_WITH_GROUCHO_URL` with Groucho's real site/app URL.
-
-## 4. Test it
+## 3. Test it
 
 Open the deployed URL (or just double-click `index.html` locally — Firestore works fine from a local file too). Submit an availability response and a potluck item, then open the site in a second browser/device and confirm you see the same data update live.
 
