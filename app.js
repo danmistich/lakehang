@@ -37,7 +37,10 @@ const auth = getAuth(app);
 // it gates the on-site *view*, not the underlying Firestore data itself.
 // ---------------------------------------------------------------------------
 const HOST_EMAILS = [
-  "REPLACE_WITH_HOST_EMAIL@example.com"
+  "dan.mistich@gmail.com",
+  "rubytahuti@gmail.com",
+  "michaelrappa@gmail.com",
+  "zkeesh@gmail.com"
 ];
 
 // ---------------------------------------------------------------------------
