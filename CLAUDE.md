@@ -21,9 +21,15 @@ All three forms (poll, potluck, contact) call the shared `syncToSheet(payload)` 
 
 Time block keys are `${day}_${time}` where day is `fri`/`sat`/`sun` and time is `morning`/`afternoon`/`evening`. Defined in `app.js` as `DAYS` and `TIMES`.
 
+## Host Access
+
+Firebase Auth (Google sign-in), gated by the `HOST_EMAILS` allowlist in `app.js`. Signing in as an allowlisted email reveals per-person names in every results-grid cell (the `.who` span); everyone else sees counts only. Requires enabling Google sign-in + adding the deployed domain to Firebase Console > Authentication > Authorized domains (see README step 4) — until then `signInWithPopup` will error, which the UI handles gracefully (status text, button re-enables).
+
+Important nuance if you touch this: it's a real sign-in requirement (no secret in the code), but not a data lockdown — `rsvps` stays `allow read: if true` in `firestore.rules` because the guest-facing headcount/overlap grid needs it, so the name-to-block linkage was already technically public before this feature existed. Don't describe this as "securing" the RSVP data in user-facing copy; it gates the on-site convenience view, not the underlying Firestore access. `renderResults()` reruns on every auth state change (via cached `lastResponses`) so the grid updates immediately on sign-in/out without a new Firestore read.
+
 ## Working on this
 
-- No auth on the site by design — it's an ungated invite link for a private friend group. Don't add a login.
+- No auth for guests, by design — RSVP/potluck/contact stay an ungated, no-login flow for a private friend group. Don't add a login requirement to any of those three forms. (Host Access, above, is a narrow, opt-in exception for a reporting feature only.)
 - No package.json / build tooling on purpose — keep it plain HTML/CSS/JS so it stays trivial to deploy (GitHub Pages / Netlify / Vercel, all zero-config for a static folder).
 - If you touch `firestore.rules`, remind whoever's testing to also re-paste the updated rules into the Firebase Console — this repo doesn't auto-deploy rules.
 - The live Firebase project config lives in `app.js` (top of file) — it's intentionally public/non-secret, safe to commit.

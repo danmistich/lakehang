@@ -17,9 +17,28 @@ import {
   getFirestore, collection, doc, setDoc, addDoc,
   onSnapshot, serverTimestamp, query, orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// ---------------------------------------------------------------------------
+// HOST ACCESS — see who picked what time slot, gated to specific Google
+// accounts. Requires enabling Google sign-in in Firebase Console >
+// Authentication, and adding this domain to Authorized domains there
+// (see README "Host Access" section). Add real host emails below, lowercase.
+//
+// Worth knowing: `rsvps` stays publicly readable (needed for the guest-
+// facing headcount/overlap grid to work with no login), so this is a real
+// sign-in requirement — no password sits in this file to find or leak — but
+// it gates the on-site *view*, not the underlying Firestore data itself.
+// ---------------------------------------------------------------------------
+const HOST_EMAILS = [
+  "REPLACE_WITH_HOST_EMAIL@example.com"
+];
 
 // ---------------------------------------------------------------------------
 // GOOGLE SHEETS SYNC — Apps Script Web App URL (see README "Sync to a Google
@@ -56,6 +75,9 @@ const TIMES = [
   { key: "evening", label: "Evening" }
 ];
 const BLOCK_KEYS = DAYS.flatMap(d => TIMES.map(t => `${d.key}_${t.key}`));
+
+let isHost = false;
+let lastResponses = [];
 
 function blockLabel(key) {
   const [dayKey, timeKey] = key.split("_");
@@ -138,13 +160,19 @@ function normalizeName(name) {
 }
 
 function renderResults(responses) {
+  lastResponses = responses;
+
   const counts = {};
-  BLOCK_KEYS.forEach(k => { counts[k] = 0; });
+  const names = {};
+  BLOCK_KEYS.forEach(k => { counts[k] = 0; names[k] = []; });
 
   responses.forEach(r => {
     const blocks = r.blocks || {};
     BLOCK_KEYS.forEach(k => {
-      if (blocks[k]) counts[k]++;
+      if (blocks[k]) {
+        counts[k]++;
+        names[k].push(r.name);
+      }
     });
   });
 
@@ -162,6 +190,18 @@ function renderResults(responses) {
       cell.classList.add("best");
     } else {
       cell.classList.add("some");
+    }
+
+    let whoSpan = cell.querySelector(".who");
+    if (isHost) {
+      if (!whoSpan) {
+        whoSpan = document.createElement("span");
+        whoSpan.className = "who";
+        cell.appendChild(whoSpan);
+      }
+      whoSpan.textContent = names[key].join(", ");
+    } else if (whoSpan) {
+      whoSpan.remove();
     }
   });
 
@@ -366,4 +406,43 @@ document.getElementById("submit-contact").addEventListener("click", async () => 
   } finally {
     btn.disabled = false;
   }
+});
+
+// ---------------------------------------------------------------------------
+// 5. HOST ACCESS
+// ---------------------------------------------------------------------------
+const hostAccessBtn = document.getElementById("host-access-btn");
+const hostAccessStatus = document.getElementById("host-access-status");
+const googleProvider = new GoogleAuthProvider();
+
+hostAccessBtn.addEventListener("click", async () => {
+  if (auth.currentUser) {
+    await signOut(auth);
+    return;
+  }
+  hostAccessBtn.disabled = true;
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch (e) {
+    console.error(e);
+    hostAccessStatus.textContent = "Sign-in didn't go through — try again.";
+  } finally {
+    hostAccessBtn.disabled = false;
+  }
+});
+
+onAuthStateChanged(auth, async user => {
+  const recognized = !!user && HOST_EMAILS.includes((user.email || "").toLowerCase());
+
+  if (user && !recognized) {
+    hostAccessStatus.textContent = "That Google account isn't a recognized host.";
+    await signOut(auth);
+    return; // signOut re-triggers this handler with user = null
+  }
+
+  isHost = recognized;
+  hostAccessBtn.textContent = recognized ? "Sign out" : "Host Access";
+  hostAccessStatus.textContent = recognized ? `Signed in as ${user.email} — names shown below.` : "";
+  resultsGrid.classList.toggle("host-mode", recognized);
+  renderResults(lastResponses);
 });
