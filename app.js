@@ -40,7 +40,8 @@ const HOST_EMAILS = [
   "dan.mistich@gmail.com",
   "rubytahuti@gmail.com",
   "michaelrappa@gmail.com",
-  "zkeesh@gmail.com"
+  "zkeesh@gmail.com",
+  "dan@soothsayer.media"
 ];
 
 // ---------------------------------------------------------------------------
