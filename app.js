@@ -25,9 +25,9 @@ const db = getFirestore(app);
 // 2. AVAILABILITY POLL
 // ---------------------------------------------------------------------------
 const DAYS = [
-  { key: "fri", label: "Fri", full: "Friday Aug 21" },
-  { key: "sat", label: "Sat", full: "Saturday Aug 22" },
-  { key: "sun", label: "Sun", full: "Sunday Aug 23" }
+  { key: "fri", label: "Fri", date: "Aug 21" },
+  { key: "sat", label: "Sat", date: "Aug 22" },
+  { key: "sun", label: "Sun", date: "Aug 23" }
 ];
 const TIMES = [
   { key: "morning", label: "Morning" },
@@ -53,8 +53,7 @@ function buildHeaderRow(container) {
   DAYS.forEach(d => {
     const head = document.createElement("div");
     head.className = "head";
-    head.textContent = d.label;
-    head.title = d.full;
+    head.innerHTML = `<span class="head-day">${d.label}</span><span class="head-date">${d.date}</span>`;
     container.appendChild(head);
   });
 }

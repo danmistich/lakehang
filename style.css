@@ -231,10 +231,22 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
 
 #input-grid .head,
 #results-grid .head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
   text-align: center;
+}
+
+.head-day {
   font: 700 11px 'IBM Plex Mono', monospace;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+}
+
+.head-date {
+  font: 500 9px 'IBM Plex Mono', monospace;
+  color: var(--muted);
 }
 
 #input-grid .row-label,
