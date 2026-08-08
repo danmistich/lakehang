@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lake Michigan Hang — Flyer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+
+  @page { size: letter portrait; margin: 0; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  @media print {
+    body { padding: 0; }
+  }
+
+  .page {
+    width: 8.5in;
+    height: 11in;
+    max-width: 100%;
+    background: #fff;
+    color: #000;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 0.65in 0.6in;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000;
+  }
+
+  @media print {
+    .page { border: none; }
+  }
+
+  .eyebrow {
+    margin: 0 0 0.25in;
+    font: 700 15px/1 'IBM Plex Mono', monospace;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font: 800 78px/0.96 'Space Grotesk', sans-serif;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .date-line {
+    margin: 0.3in 0 0;
+    font: 700 26px/1.2 'IBM Plex Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .rule {
+    border: none;
+    border-top: 3px solid #000;
+    margin: 0.3in 0;
+  }
+
+  .intro {
+    margin: 0;
+    font: 400 17px/1.55 'IBM Plex Mono', monospace;
+    max-width: 5.8in;
+  }
+
+  .intro + .intro { margin-top: 0.18in; }
+
+  .main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5in;
+    margin-top: 0.35in;
+  }
+
+  .qr-block {
+    flex: none;
+    text-align: center;
+  }
+
+  .qr-box {
+    border: 3px solid #000;
+    padding: 14px;
+    width: 2.4in;
+    height: 2.4in;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr-box img { width: 100%; height: 100%; display: block; }
+
+  .qr-caption {
+    margin-top: 10px;
+    font: 700 13px/1.3 'IBM Plex Mono', monospace;
+    letter-spacing: 0.03em;
+  }
+
+  .side-copy {
+    font: 400 16px/1.6 'IBM Plex Mono', monospace;
+  }
+
+  .side-copy p { margin: 0 0 0.16in; }
+  .side-copy p:last-child { margin-bottom: 0; }
+
+  .side-copy .label {
+    font: 700 13px 'IBM Plex Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  footer {
+    margin-top: 0.35in;
+    padding-top: 0.2in;
+    border-top: 1px solid #000;
+    font: 400 12.5px/1.6 'IBM Plex Mono', monospace;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.3in;
+  }
+
+  footer .mark { font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <p class="eyebrow">Statement 01 / An Invitation</p>
+  <h1>Summer Potluck<br>and Hang on<br>Lake Michigan</h1>
+  <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
+
+  <hr class="rule">
+
+  <p class="intro">One afternoon at the lake, sometime between Friday and Sunday. No agenda beyond good people getting together &mdash; water, fire, and whoever brings food.</p>
+  <p class="intro">Chicago's North Side lakefront. Exact day, time, and spot get locked in by the group &mdash; scan for details.</p>
+
+  <div class="main">
+    <div class="qr-block">
+      <div class="qr-box">
+        <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
+      </div>
+      <p class="qr-caption">danmistich.github.io/lakehang</p>
+    </div>
+    <div class="side-copy">
+      <p><span class="label">Vote on a time</span>Pick every block that works for you &mdash; the site shows where the group overlaps.</p>
+      <p><span class="label">Bring something</span>Add your name and what you're bringing to a shared list, so we don't end up with five bags of chips.</p>
+      <p><span class="label">Stay in the loop</span>Leave a phone number or email for a heads-up once the day and time are locked in.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span>&sect; From the people behind <span class="mark">Team Human</span> and <span class="mark">Groucho</span></span>
+    <span>See you on the water</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
