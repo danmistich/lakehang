@@ -43,6 +43,7 @@ const pollGuestsInput = document.getElementById("poll-guests");
 const pollStatus = document.getElementById("poll-status");
 const responderCount = document.getElementById("responder-count");
 const headcountNumber = document.getElementById("headcount-number");
+const whoComing = document.getElementById("who-coming");
 
 let selectedBlocks = new Set();
 
@@ -150,6 +151,10 @@ function renderResults(responses) {
 
   const totalHeadcount = responses.reduce((sum, r) => sum + 1 + (Number(r.guests) || 0), 0);
   headcountNumber.textContent = totalHeadcount;
+
+  whoComing.textContent = responses.length === 0
+    ? ""
+    : `Coming so far: ${responses.map(r => r.name).join(", ")}`;
 }
 
 buildInputGrid();

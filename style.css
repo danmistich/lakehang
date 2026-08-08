@@ -80,6 +80,21 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
   color: var(--muted);
 }
 
+.callout-text a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1.5px;
+}
+
+.callout-text a:hover { color: var(--accent); }
+
+#who-coming { margin-top: -8px; }
+
+.spotify-embed {
+  border: 1px solid var(--ink);
+  line-height: 0;
+}
+
 /* ---------- Sections ---------- */
 .section {
   padding: 36px 40px;
