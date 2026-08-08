@@ -6,6 +6,18 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Keep this in sync with HOST_EMAILS in app.js — that list gates the
+    // on-site UI, this one is the real, server-enforced access control.
+    function isHost() {
+      return request.auth != null && request.auth.token.email in [
+        'dan.mistich@gmail.com',
+        'rubytahuti@gmail.com',
+        'michaelrappa@gmail.com',
+        'zkeesh@gmail.com',
+        'dan@soothsayer.media'
+      ];
+    }
+
     // One doc per person, doc ID = their name lowercased/trimmed, so
     // resubmitting the same name updates their existing answer instead
     // of creating a duplicate.
@@ -36,11 +48,14 @@ service cloud.firestore {
     }
 
     // Contact info (phone/email) for the mass text/email blast.
-    // Write-only by design: guests can submit, but nobody — including the
-    // site itself — can read this back through the client SDK. Hosts pull
-    // the list from the Firebase Console, which bypasses these rules.
+    // Guests can submit but not read — only signed-in hosts (see isHost())
+    // can read this back, via the "Host Access" control on the site. This
+    // is real, server-enforced access control, unlike the results-grid
+    // name reveal (which can't be, since rsvps has to stay publicly
+    // readable for the guest-facing headcount/overlap grid to work).
     match /contacts/{entryId} {
-      allow read, update, delete: if false;
+      allow read: if isHost();
+      allow update, delete: if false;
       allow create: if request.resource.data.name is string
                     && request.resource.data.name.size() > 0
                     && request.resource.data.name.size() <= 40

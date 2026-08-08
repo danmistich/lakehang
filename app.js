@@ -413,40 +413,77 @@ document.getElementById("submit-contact").addEventListener("click", async () => 
 });
 
 // ---------------------------------------------------------------------------
-// 5. HOST ACCESS
+// 5. HOST ACCESS — two controls on the page (results grid + contact
+// section), both driven by the same sign-in state.
 // ---------------------------------------------------------------------------
-const hostAccessBtn = document.getElementById("host-access-btn");
-const hostAccessStatus = document.getElementById("host-access-status");
+const hostAccessBtns = document.querySelectorAll(".host-access-btn");
+const hostAccessStatuses = document.querySelectorAll(".host-access-status");
+const hostContacts = document.getElementById("host-contacts");
 const googleProvider = new GoogleAuthProvider();
 
-hostAccessBtn.addEventListener("click", async () => {
-  if (auth.currentUser) {
-    await signOut(auth);
-    return;
-  }
-  hostAccessBtn.disabled = true;
-  try {
-    await signInWithPopup(auth, googleProvider);
-  } catch (e) {
-    console.error(e);
-    hostAccessStatus.textContent = "Sign-in didn't go through — try again.";
-  } finally {
-    hostAccessBtn.disabled = false;
-  }
+let unsubscribeContacts = null;
+
+hostAccessBtns.forEach(btn => {
+  btn.addEventListener("click", async () => {
+    if (auth.currentUser) {
+      await signOut(auth);
+      return;
+    }
+    hostAccessBtns.forEach(b => b.disabled = true);
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (e) {
+      console.error(e);
+      hostAccessStatuses.forEach(s => s.textContent = "Sign-in didn't go through — try again.");
+    } finally {
+      hostAccessBtns.forEach(b => b.disabled = false);
+    }
+  });
 });
 
 onAuthStateChanged(auth, async user => {
   const recognized = !!user && HOST_EMAILS.includes((user.email || "").toLowerCase());
 
   if (user && !recognized) {
-    hostAccessStatus.textContent = "That Google account isn't a recognized host.";
+    hostAccessStatuses.forEach(s => s.textContent = "That Google account isn't a recognized host.");
     await signOut(auth);
     return; // signOut re-triggers this handler with user = null
   }
 
   isHost = recognized;
-  hostAccessBtn.textContent = recognized ? "Sign out" : "Host Access";
-  hostAccessStatus.textContent = recognized ? `Signed in as ${user.email} — names shown below.` : "";
+  hostAccessBtns.forEach(b => b.textContent = recognized ? "Sign out" : "Host Access");
+  hostAccessStatuses.forEach(s => s.textContent = recognized ? `Signed in as ${user.email}.` : "");
   resultsGrid.classList.toggle("host-mode", recognized);
   renderResults(lastResponses);
+
+  if (unsubscribeContacts) {
+    unsubscribeContacts();
+    unsubscribeContacts = null;
+  }
+  hostContacts.innerHTML = "";
+
+  if (recognized) {
+    const contactsQuery = query(collection(db, "contacts"), orderBy("createdAt", "asc"));
+    unsubscribeContacts = onSnapshot(contactsQuery, snapshot => {
+      renderHostContacts(snapshot.docs.map(d => d.data()));
+    }, err => {
+      console.error("Failed to load contacts:", err);
+      hostContacts.innerHTML = `<p class="section-sub">Couldn't load contacts.</p>`;
+    });
+  }
 });
+
+function renderHostContacts(contacts) {
+  if (contacts.length === 0) {
+    hostContacts.innerHTML = `<p class="section-sub">No contact info submitted yet.</p>`;
+    return;
+  }
+  const rows = contacts.map(c => {
+    const reach = [c.email, c.phone].filter(Boolean).map(escapeHtml).join(" &middot; ");
+    return `<li><span class="potluck-item">${escapeHtml(c.name)}</span><span class="potluck-by">${reach}</span></li>`;
+  }).join("");
+  hostContacts.innerHTML = `
+    <p class="section-sub">Submitted so far (host-only):</p>
+    <ul class="potluck-list">${rows}</ul>
+  `;
+}

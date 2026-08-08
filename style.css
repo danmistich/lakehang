@@ -312,6 +312,12 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
   margin-top: 16px;
 }
 
+#host-contacts:not(:empty) {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink);
+}
+
 .host-access-btn {
   border: 1px solid var(--muted);
   background: transparent;

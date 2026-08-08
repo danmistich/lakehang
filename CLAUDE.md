@@ -13,7 +13,7 @@ Single-page invite site for a Lake Michigan hangout (Aug 21-23). Plain HTML/CSS/
 
 - `rsvps/{normalizedName}` — one doc per person. `{ name, blocks: { fri_morning: bool, fri_afternoon: bool, ..., sun_evening: bool }, guests: int (0-20, extra people they're bringing, not counting themselves), updatedAt }`. Doc ID is the person's name, lowercased/trimmed, so resubmitting updates in place. Total headcount displayed on the site = number of rsvp docs + sum of `guests`.
 - `potluck/{autoId}` — one doc per item added. `{ name, item, createdAt }`. Always additive, never overwritten.
-- `contacts/{autoId}` — one doc per submission from "Stay In The Loop". `{ name, email, phone, createdAt }`. Write-only rules (no read/update/delete from the client) — hosts pull entries from the Firebase Console.
+- `contacts/{autoId}` — one doc per submission from "Stay In The Loop". `{ name, email, phone, createdAt }`. Create is open to anyone (guest submissions); read is host-only via `isHost()` in `firestore.rules` — see Host Access below. Signed-in hosts see this list rendered live in section 03; without Host Access, pull entries from the Firebase Console instead.
 
 ## Google Sheets sync
 
@@ -23,9 +23,19 @@ Time block keys are `${day}_${time}` where day is `fri`/`sat`/`sun` and time is 
 
 ## Host Access
 
-Firebase Auth (Google sign-in), gated by the `HOST_EMAILS` allowlist in `app.js`. Signing in as an allowlisted email reveals per-person names in every results-grid cell (the `.who` span); everyone else sees counts only. Requires enabling Google sign-in + adding the deployed domain to Firebase Console > Authentication > Authorized domains (see README step 4) — until then `signInWithPopup` will error, which the UI handles gracefully (status text, button re-enables).
+Firebase Auth (Google sign-in), gated by two allowlists that must be kept in sync by hand:
+- `HOST_EMAILS` in `app.js` — drives the on-site UI (results-grid name reveal, contacts list visibility).
+- `isHost()` in `firestore.rules` — the actual server-side read gate on `contacts`.
 
-Important nuance if you touch this: it's a real sign-in requirement (no secret in the code), but not a data lockdown — `rsvps` stays `allow read: if true` in `firestore.rules` because the guest-facing headcount/overlap grid needs it, so the name-to-block linkage was already technically public before this feature existed. Don't describe this as "securing" the RSVP data in user-facing copy; it gates the on-site convenience view, not the underlying Firestore access. `renderResults()` reruns on every auth state change (via cached `lastResponses`) so the grid updates immediately on sign-in/out without a new Firestore read.
+There are **two** `.host-access-btn` / `.host-access-status` instances in `index.html` (one near the results grid, one in the contact section) sharing one `onAuthStateChanged` handler in `app.js` — selected via `querySelectorAll`, not `getElementById`, so adding a third instance anywhere just needs the same two classes, no JS changes. Signing in as an allowlisted email: (1) reveals per-person names in every results-grid cell (the `.who` span), and (2) subscribes to `contacts` and renders submissions into `#host-contacts` (reuses `.potluck-list` styling). Both reset on sign-out; the contacts `onSnapshot` listener is explicitly unsubscribed then (stored in `unsubscribeContacts`) so a signed-out session doesn't keep pulling host-only data.
+
+Requires enabling Google sign-in + adding every deployed domain to Firebase Console > Authentication > Authorized domains (see README step 4) — until then `signInWithPopup` will error, which the UI handles gracefully (status text, button re-enables).
+
+Important nuance if you touch this — **the two things Host Access unlocks have different real security levels**:
+- **Contacts (section 03) is a real lockdown.** Before this existed, `contacts` was `allow read: if false` for everyone, no exceptions. `isHost()` is a strict upgrade enforced server-side — there's nothing to bypass client-side.
+- **The results-grid name reveal is not a data lockdown**, even though it's the same sign-in. `rsvps` stays `allow read: if true` in `firestore.rules` because the guest-facing headcount/overlap grid needs it, so the name-to-block linkage was already technically public before this feature existed. Don't describe this half as "securing" the RSVP data in user-facing copy; it gates the on-site convenience view, not the underlying Firestore access.
+
+`renderResults()` reruns on every auth state change (via cached `lastResponses`) so the grid updates immediately on sign-in/out without a new Firestore read.
 
 ## Working on this
 
