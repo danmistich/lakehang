@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lake Michigan Hang — Silly Flyer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+
+  @page { size: letter portrait; margin: 0; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  @media print {
+    body { padding: 0; }
+  }
+
+  .page {
+    width: 8.5in;
+    height: 11in;
+    max-width: 100%;
+    background: #fff;
+    color: #000;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 0.6in 0.6in;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000;
+  }
+
+  @media print {
+    .page { border: none; }
+  }
+
+  .eyebrow {
+    margin: 0 0 0.2in;
+    font: 700 15px/1 'IBM Plex Mono', monospace;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #b3311f;
+  }
+
+  h1 {
+    margin: 0;
+    font: 800 52px/1.02 'Space Grotesk', sans-serif;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .date-line {
+    margin: 0.22in 0 0;
+    font: 700 24px/1.2 'IBM Plex Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .rule {
+    border: none;
+    border-top: 3px solid #000;
+    margin: 0.22in 0;
+  }
+
+  .intro {
+    margin: 0;
+    font: 400 16px/1.5 'IBM Plex Mono', monospace;
+    max-width: 6.3in;
+  }
+
+  .graphics-row {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5in;
+    margin-top: 0.3in;
+  }
+
+  .graphic-block {
+    text-align: center;
+  }
+
+  .graphic-block img {
+    height: 2.3in;
+    width: auto;
+    display: block;
+  }
+
+  .graphic-caption {
+    margin-top: 8px;
+    font: 700 12px 'IBM Plex Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #4a4640;
+  }
+
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4in;
+    margin-top: 0.3in;
+  }
+
+  .qr-box {
+    flex: none;
+    border: 3px solid #000;
+    padding: 10px;
+    width: 1.7in;
+    height: 1.7in;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr-box img { width: 100%; height: 100%; display: block; }
+
+  .cta-copy {
+    font: 400 16px/1.5 'IBM Plex Mono', monospace;
+  }
+
+  .cta-copy .big {
+    display: block;
+    font: 800 22px 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .cta-copy .url {
+    display: block;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 0.3in;
+    padding-top: 0.18in;
+    border-top: 1px solid #000;
+    font: 400 12px/1.5 'IBM Plex Mono', monospace;
+  }
+
+  footer .mark { font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <p class="eyebrow">Public Service Announcement</p>
+  <h1>Summer Potluck and Hang on Lake Michigan</h1>
+  <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
+
+  <hr class="rule">
+
+  <p class="intro">Analog connection on Chicago's lakefront. Certified 100% off-screen. Side effects may include eye contact, real conversations, and forgetting your phone exists.</p>
+
+  <div class="graphics-row">
+    <div class="graphic-block">
+      <img src="assets/silly-seal.png" alt="Certified Analog seal with a crossed-out WiFi symbol">
+      <p class="graphic-caption">Inspected &amp; approved</p>
+    </div>
+    <div class="graphic-block">
+      <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares">
+      <p class="graphic-caption">Leave it in the car</p>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <div class="qr-box">
+      <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
+    </div>
+    <div class="cta-copy">
+      <span class="big">Scan to find the signal</span>
+      Vote on a time, add what you're bringing, and leave your info for a heads-up once it's locked in.
+      <span class="url">chicagogroucholakehang.netlify.app</span>
+    </div>
+  </div>
+
+  <footer>
+    <span>&sect; An event organized by Chicagoans connected through <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club) &mdash; this flyer is the silly one, there's a normal one too</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
