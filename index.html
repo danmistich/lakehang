@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lake Michigan Hang — Aug 21-23</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="waves"></div>
+  <div class="hero-inner">
+    <p class="eyebrow">you're invited to the</p>
+    <h1>🌊 Lake Michigan Hang 🌊</h1>
+    <p class="subtitle">Friday Aug 21 &mdash; Sunday Aug 23</p>
+    <p class="tagline">Sun, water, and way too much food. Fill out the two things below so we can lock in a time and not end up with five bags of chips.</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- AVAILABILITY POLL -->
+  <section class="card" id="poll-section">
+    <h2>📅 When are you free?</h2>
+    <p class="card-sub">Tap every block that works for you, drop your name in, and hit submit. Already answered? Type your name again to update your answer.</p>
+
+    <div class="field">
+      <label for="poll-name">Your name</label>
+      <input type="text" id="poll-name" placeholder="e.g. Dan" maxlength="40">
+    </div>
+
+    <div class="grid-wrap">
+      <div class="avail-grid" id="input-grid"></div>
+    </div>
+
+    <button class="btn primary" id="submit-availability">Submit my availability</button>
+    <p class="status-msg" id="poll-status"></p>
+
+    <div class="divider"></div>
+
+    <h3>🔥 Group overlap so far</h3>
+    <p class="card-sub" id="responder-count">No responses yet — be the first!</p>
+    <div class="grid-wrap">
+      <div class="avail-grid" id="results-grid"></div>
+    </div>
+    <p class="legend"><span class="swatch swatch-best"></span> best overlap &nbsp; <span class="swatch swatch-mid"></span> some overlap &nbsp; <span class="swatch swatch-none"></span> nobody yet</p>
+  </section>
+
+  <!-- POTLUCK -->
+  <section class="card" id="potluck-section">
+    <h2>🧺 Potluck sign-up</h2>
+    <p class="card-sub">Add what you're bringing. Check the list first so we don't get five bags of chips and zero drinks.</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="potluck-name">Your name</label>
+        <input type="text" id="potluck-name" placeholder="e.g. Dan" maxlength="40">
+      </div>
+      <div class="field">
+        <label for="potluck-item">What are you bringing?</label>
+        <input type="text" id="potluck-item" placeholder="e.g. a cooler of drinks" maxlength="80">
+      </div>
+    </div>
+    <p class="dupe-warning" id="dupe-warning"></p>
+    <button class="btn primary" id="submit-potluck">Add to the list</button>
+    <p class="status-msg" id="potluck-status"></p>
+
+    <div class="divider"></div>
+
+    <ul class="potluck-list" id="potluck-list"></ul>
+    <p class="card-sub" id="potluck-empty">Nothing on the list yet — add the first item!</p>
+  </section>
+
+</main>
+
+<footer>
+  <p>made with 🍻 for the lake &middot; see you on the water</p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
