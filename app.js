@@ -288,3 +288,46 @@ document.getElementById("submit-potluck").addEventListener("click", async () => 
     btn.disabled = false;
   }
 });
+
+// ---------------------------------------------------------------------------
+// 4. CONTACT INFO (write-only — never read back on the site, hosts pull it
+//    from the Firebase Console when it's time to send a heads-up)
+// ---------------------------------------------------------------------------
+const contactNameInput = document.getElementById("contact-name");
+const contactEmailInput = document.getElementById("contact-email");
+const contactPhoneInput = document.getElementById("contact-phone");
+const contactStatus = document.getElementById("contact-status");
+
+document.getElementById("submit-contact").addEventListener("click", async () => {
+  const name = contactNameInput.value.trim();
+  const email = contactEmailInput.value.trim();
+  const phone = contactPhoneInput.value.trim();
+
+  if (!name) {
+    setStatus(contactStatus, "Add your name first!", "err");
+    return;
+  }
+  if (!email && !phone) {
+    setStatus(contactStatus, "Add an email or phone number.", "err");
+    return;
+  }
+
+  const btn = document.getElementById("submit-contact");
+  btn.disabled = true;
+  try {
+    await addDoc(collection(db, "contacts"), {
+      name,
+      email,
+      phone,
+      createdAt: serverTimestamp()
+    });
+    contactEmailInput.value = "";
+    contactPhoneInput.value = "";
+    setStatus(contactStatus, "Got it — thanks!", "ok");
+  } catch (e) {
+    console.error(e);
+    setStatus(contactStatus, "Something went wrong saving that. Try again.", "err");
+  } finally {
+    btn.disabled = false;
+  }
+});

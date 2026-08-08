@@ -35,6 +35,23 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // Contact info (phone/email) for the mass text/email blast.
+    // Write-only by design: guests can submit, but nobody — including the
+    // site itself — can read this back through the client SDK. Hosts pull
+    // the list from the Firebase Console, which bypasses these rules.
+    match /contacts/{entryId} {
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 40
+                    && request.resource.data.email is string
+                    && request.resource.data.email.size() <= 100
+                    && request.resource.data.phone is string
+                    && request.resource.data.phone.size() <= 20
+                    && (request.resource.data.email.size() > 0 || request.resource.data.phone.size() > 0)
+                    && request.resource.data.keys().hasOnly(['name', 'email', 'phone', 'createdAt']);
+    }
+
     // Deny everything else by default.
     match /{document=**} {
       allow read, write: if false;
