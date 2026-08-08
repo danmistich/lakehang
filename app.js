@@ -1,17 +1,15 @@
 // ---------------------------------------------------------------------------
-// 1. FIREBASE CONFIG — replace with your own project's config.
-//    Get this from: Firebase Console > Project Settings > Your apps > Web app
-//    These values are safe to expose publicly — they identify the project,
-//    they are not secret keys. Access is controlled by Firestore security
-//    rules (see firestore.rules in this repo), not by hiding this object.
+// 1. FIREBASE CONFIG — from Firebase Console > Project Settings > Your apps.
+//    Safe to commit/expose publicly — not a secret key. Access is controlled
+//    by firestore.rules, not by hiding this object.
 // ---------------------------------------------------------------------------
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCyIWn4R3_0RkrK9mtckzMqfjo6dJyriEM",
+  authDomain: "lakehang.firebaseapp.com",
+  projectId: "lakehang",
+  storageBucket: "lakehang.firebasestorage.app",
+  messagingSenderId: "251020745131",
+  appId: "1:251020745131:web:3a723c88e39cef4f661aee"
 };
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
