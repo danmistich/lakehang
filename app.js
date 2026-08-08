@@ -41,8 +41,10 @@ const BLOCK_KEYS = DAYS.flatMap(d => TIMES.map(t => `${d.key}_${t.key}`));
 const inputGrid = document.getElementById("input-grid");
 const resultsGrid = document.getElementById("results-grid");
 const pollNameInput = document.getElementById("poll-name");
+const pollGuestsInput = document.getElementById("poll-guests");
 const pollStatus = document.getElementById("poll-status");
 const responderCount = document.getElementById("responder-count");
+const headcountNumber = document.getElementById("headcount-number");
 
 let selectedBlocks = new Set();
 
@@ -147,6 +149,9 @@ function renderResults(responses) {
   } else {
     responderCount.textContent = `${responses.length} ${responses.length === 1 ? "person has" : "people have"} responded. Best overlap highlighted below.`;
   }
+
+  const totalHeadcount = responses.reduce((sum, r) => sum + 1 + (Number(r.guests) || 0), 0);
+  headcountNumber.textContent = totalHeadcount;
 }
 
 buildInputGrid();
@@ -176,6 +181,10 @@ document.getElementById("submit-availability").addEventListener("click", async (
   const blocks = {};
   BLOCK_KEYS.forEach(k => { blocks[k] = selectedBlocks.has(k); });
 
+  let guests = parseInt(pollGuestsInput.value, 10);
+  if (!Number.isFinite(guests) || guests < 0) guests = 0;
+  if (guests > 20) guests = 20;
+
   const btn = document.getElementById("submit-availability");
   btn.disabled = true;
   try {
@@ -183,6 +192,7 @@ document.getElementById("submit-availability").addEventListener("click", async (
     await setDoc(doc(db, "rsvps", docId), {
       name,
       blocks,
+      guests,
       updatedAt: serverTimestamp()
     });
     setStatus(pollStatus, "Got it — thanks! You can update anytime by resubmitting.", "ok");

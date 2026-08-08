@@ -11,7 +11,7 @@ Single-page invite site for a Lake Michigan hangout (Aug 21-23). Plain HTML/CSS/
 
 ## Data model (Firestore)
 
-- `rsvps/{normalizedName}` — one doc per person. `{ name, blocks: { fri_morning: bool, fri_afternoon: bool, ..., sun_evening: bool }, updatedAt }`. Doc ID is the person's name, lowercased/trimmed, so resubmitting updates in place.
+- `rsvps/{normalizedName}` — one doc per person. `{ name, blocks: { fri_morning: bool, fri_afternoon: bool, ..., sun_evening: bool }, guests: int (0-20, extra people they're bringing, not counting themselves), updatedAt }`. Doc ID is the person's name, lowercased/trimmed, so resubmitting updates in place. Total headcount displayed on the site = number of rsvp docs + sum of `guests`.
 - `potluck/{autoId}` — one doc per item added. `{ name, item, createdAt }`. Always additive, never overwritten.
 
 Time block keys are `${day}_${time}` where day is `fri`/`sat`/`sun` and time is `morning`/`afternoon`/`evening`. Defined in `app.js` as `DAYS` and `TIMES`.

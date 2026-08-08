@@ -27,10 +27,17 @@
     <h2>📅 When are you free?</h2>
     <p class="card-sub">Tap every block that works for you, drop your name in, and hit submit. Already answered? Type your name again to update your answer.</p>
 
-    <div class="field">
-      <label for="poll-name">Your name</label>
-      <input type="text" id="poll-name" placeholder="e.g. Dan" maxlength="40">
+    <div class="field-row">
+      <div class="field">
+        <label for="poll-name">Your name</label>
+        <input type="text" id="poll-name" placeholder="e.g. Dan" maxlength="40">
+      </div>
+      <div class="field field-narrow">
+        <label for="poll-guests">Bringing anyone else?</label>
+        <input type="number" id="poll-guests" placeholder="0" min="0" max="20" step="1">
+      </div>
     </div>
+    <p class="field-hint">Just the extra people with you (kids, partner, +1s) — don't count yourself.</p>
 
     <div class="grid-wrap">
       <div class="avail-grid" id="input-grid"></div>
@@ -40,6 +47,11 @@
     <p class="status-msg" id="poll-status"></p>
 
     <div class="divider"></div>
+
+    <div class="headcount-box">
+      <span class="headcount-number" id="headcount-number">0</span>
+      <span class="headcount-label">people headed to the lake so far</span>
+    </div>
 
     <h3>🔥 Group overlap so far</h3>
     <p class="card-sub" id="responder-count">No responses yet — be the first!</p>

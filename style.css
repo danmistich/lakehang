@@ -110,6 +110,13 @@ main {
 /* ---------- Fields ---------- */
 .field { margin-bottom: 1rem; flex: 1; }
 .field-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.field-narrow { flex: 0 1 160px; }
+
+.field-hint {
+  margin: -0.6rem 0 1.2rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
 
 label {
   display: block;
@@ -119,7 +126,8 @@ label {
   margin-bottom: 0.35rem;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
   width: 100%;
   padding: 0.7rem 0.9rem;
   border: 2px solid #dcecf4;
@@ -131,7 +139,8 @@ input[type="text"] {
   transition: border-color 0.15s ease;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="number"]:focus {
   outline: none;
   border-color: var(--water);
 }
@@ -245,6 +254,34 @@ input[type="text"]:focus {
   border-color: var(--sunset);
   box-shadow: 0 4px 14px rgba(255, 126, 95, 0.4);
   transform: scale(1.03);
+}
+
+.headcount-box {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255, 126, 95, 0.12), rgba(255, 179, 71, 0.12));
+  border: 2px solid rgba(255, 126, 95, 0.25);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.headcount-number {
+  font-family: 'Baloo 2', cursive;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--sunset);
+  line-height: 1;
+}
+
+.headcount-label {
+  font-weight: 700;
+  color: var(--deep-water);
+  font-size: 0.95rem;
 }
 
 .legend {

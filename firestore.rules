@@ -15,7 +15,10 @@ service cloud.firestore {
                     && request.resource.data.name.size() > 0
                     && request.resource.data.name.size() <= 40
                     && request.resource.data.blocks is map
-                    && request.resource.data.keys().hasOnly(['name', 'blocks', 'updatedAt']);
+                    && request.resource.data.guests is int
+                    && request.resource.data.guests >= 0
+                    && request.resource.data.guests <= 20
+                    && request.resource.data.keys().hasOnly(['name', 'blocks', 'guests', 'updatedAt']);
       allow delete: if false;
     }
 
