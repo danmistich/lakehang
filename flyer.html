@@ -71,13 +71,25 @@
     margin: 0.3in 0;
   }
 
+  .intro-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35in;
+  }
+
   .intro {
     margin: 0;
     font: 400 17px/1.55 'IBM Plex Mono', monospace;
-    max-width: 5.8in;
+    max-width: 5.4in;
   }
 
   .intro + .intro { margin-top: 0.18in; }
+
+  .phone-accent {
+    flex: none;
+    height: 1.3in;
+    width: auto;
+  }
 
   .main {
     flex: 1;
@@ -145,7 +157,10 @@
 
   <hr class="rule">
 
-  <p class="intro">Analog connection on Chicago's lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+  <div class="intro-row">
+    <p class="intro">Analog connection on Chicago's lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+    <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
+  </div>
 
   <div class="main">
     <div class="qr-block">
