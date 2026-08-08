@@ -52,6 +52,12 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
   font: 700 15px/1.4 'IBM Plex Mono', monospace;
 }
 
+.tbd-line {
+  margin: 8px 0 0;
+  font: 700 13px/1.4 'IBM Plex Mono', monospace;
+  color: var(--accent);
+}
+
 .intro {
   margin: 16px 0 0;
   font: 400 14px/1.6 'IBM Plex Mono', monospace;
