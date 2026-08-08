@@ -99,7 +99,7 @@ function buildResultsGridSkeleton() {
       const cell = document.createElement("div");
       cell.className = "cell result none";
       cell.dataset.key = key;
-      cell.innerHTML = `<span class="count">0</span><span class="who"></span>`;
+      cell.innerHTML = `<span class="count">0</span>`;
       resultsGrid.appendChild(cell);
     });
   });
@@ -111,16 +111,12 @@ function normalizeName(name) {
 
 function renderResults(responses) {
   const counts = {};
-  const names = {};
-  BLOCK_KEYS.forEach(k => { counts[k] = 0; names[k] = []; });
+  BLOCK_KEYS.forEach(k => { counts[k] = 0; });
 
   responses.forEach(r => {
     const blocks = r.blocks || {};
     BLOCK_KEYS.forEach(k => {
-      if (blocks[k]) {
-        counts[k]++;
-        names[k].push(r.name);
-      }
+      if (blocks[k]) counts[k]++;
     });
   });
 
@@ -131,7 +127,6 @@ function renderResults(responses) {
     if (!cell) return;
     const n = counts[key];
     cell.querySelector(".count").textContent = n;
-    cell.querySelector(".who").textContent = names[key].join(", ");
     cell.classList.remove("none", "some", "best");
     if (n === 0) {
       cell.classList.add("none");
