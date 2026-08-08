@@ -51,7 +51,62 @@ Easiest path: **GitHub Pages**, since you're already putting this in a GitHub re
 
 Alternatives that work just as well for a static site like this: drag-and-drop the folder onto [Netlify Drop](https://app.netlify.com/drop), or `vercel deploy` via the Vercel CLI.
 
-## 3. Test it
+## 3. (Optional) Sync everything to one merged Google Sheet
+
+By default, all data only lives in Firestore (viewable via the Firebase Console). To also get **one row per person** in a Google Sheet — merging their availability poll answer, potluck item(s), and contact info together, matched by name — no server needed:
+
+1. Go to [sheets.google.com](https://sheets.google.com) and create a new blank spreadsheet (e.g. "Lake Hang Guests"). Add a header row: `Timestamp | Name | Email | Phone | Guests | Availability | Bringing`.
+2. **Extensions > Apps Script**. Delete the placeholder code and paste in:
+   ```js
+   function doPost(e) {
+     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+     const data = JSON.parse(e.postData.contents);
+     const name = (data.name || "").trim();
+     if (!name) return respond({ status: "error", message: "missing name" });
+     const key = name.toLowerCase();
+
+     const values = sheet.getDataRange().getValues();
+     let row = -1;
+     for (let i = 1; i < values.length; i++) {
+       if (String(values[i][1] || "").trim().toLowerCase() === key) { row = i + 1; break; }
+     }
+     if (row === -1) {
+       sheet.appendRow([new Date(), name, "", "", "", "", ""]);
+       row = sheet.getLastRow();
+     } else {
+       sheet.getRange(row, 1).setValue(new Date());
+     }
+
+     // Columns: A Timestamp, B Name, C Email, D Phone, E Guests, F Availability, G Bringing
+     if (data.type === "contact") {
+       if (data.email) sheet.getRange(row, 3).setValue(data.email);
+       if (data.phone) sheet.getRange(row, 4).setValue(data.phone);
+     } else if (data.type === "rsvp") {
+       sheet.getRange(row, 5).setValue(data.guests != null ? data.guests : "");
+       sheet.getRange(row, 6).setValue(data.availability || "");
+     } else if (data.type === "potluck") {
+       const cell = sheet.getRange(row, 7);
+       const existing = cell.getValue();
+       cell.setValue(existing ? existing + ", " + data.item : data.item);
+     }
+
+     return respond({ status: "ok" });
+   }
+
+   function respond(obj) {
+     return ContentService.createTextOutput(JSON.stringify(obj))
+       .setMimeType(ContentService.MimeType.JSON);
+   }
+   ```
+3. **Deploy > New deployment** → gear icon next to "Select type" → **Web app**. Set **Execute as: Me**, **Who has access: Anyone**. Click **Deploy**, and authorize it (it's your own script acting on your own Sheet).
+4. Copy the Web App URL (ends in `/exec`).
+5. Open [`app.js`](app.js), find `GOOGLE_SHEETS_WEBAPP_URL` near the top, and replace the placeholder with that URL.
+
+**How the merge works:** each of the three forms (poll, potluck, contact form) sends its own small payload with the person's name as the match key. The script looks for an existing row with that name (case-insensitive) and updates only the relevant columns, or creates a new row if it's their first submission. Potluck items accumulate in one cell (comma-separated) rather than overwriting, matching how potluck already works elsewhere on the site — if someone adds three items across three visits, all three show up in their row.
+
+**Worth knowing:** the browser can't read Apps Script's response (a CORS quirk with Web Apps), so this call is "fire and forget" — the page can't tell you if it actually landed in the Sheet. That's why Firestore stays the reliable copy regardless; the Sheet is a convenience mirror. Also, since matching is by exact name text, someone submitting once as "Dan" and later as "Dan M" gets two separate rows — worth a heads-up to your group to use the same name each time. After setup, submit a test entry in each of the three sections and check the Sheet to confirm it's merging correctly.
+
+## 4. Test it
 
 Open the deployed URL (or just double-click `index.html` locally — Firestore works fine from a local file too). Submit an availability response and a potluck item, then open the site in a second browser/device and confirm you see the same data update live.
 

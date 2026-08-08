@@ -22,6 +22,27 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ---------------------------------------------------------------------------
+// GOOGLE SHEETS SYNC — Apps Script Web App URL (see README "Sync to a Google
+// Sheet" section for setup). Best-effort mirror of all three forms (poll,
+// potluck, contact) into ONE merged row per person, matched by name.
+// Firestore stays the reliable source of truth regardless.
+// ---------------------------------------------------------------------------
+const GOOGLE_SHEETS_WEBAPP_URL = "REPLACE_WITH_GOOGLE_SHEETS_WEBAPP_URL";
+
+function syncToSheet(payload) {
+  if (GOOGLE_SHEETS_WEBAPP_URL.startsWith("REPLACE_WITH")) return;
+  // no-cors: Apps Script Web Apps don't send CORS headers the browser can
+  // read, so this is fire-and-forget — we can't confirm it landed. That's
+  // fine since Firestore (written just before this call) is the reliable copy.
+  fetch(GOOGLE_SHEETS_WEBAPP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }).catch(e => console.error("Sheet sync failed (non-blocking):", e));
+}
+
+// ---------------------------------------------------------------------------
 // 2. AVAILABILITY POLL
 // ---------------------------------------------------------------------------
 const DAYS = [
@@ -35,6 +56,13 @@ const TIMES = [
   { key: "evening", label: "Evening" }
 ];
 const BLOCK_KEYS = DAYS.flatMap(d => TIMES.map(t => `${d.key}_${t.key}`));
+
+function blockLabel(key) {
+  const [dayKey, timeKey] = key.split("_");
+  const day = DAYS.find(d => d.key === dayKey);
+  const time = TIMES.find(t => t.key === timeKey);
+  return `${day.label} ${time.label}`;
+}
 
 const inputGrid = document.getElementById("input-grid");
 const resultsGrid = document.getElementById("results-grid");
@@ -192,6 +220,12 @@ document.getElementById("submit-availability").addEventListener("click", async (
       guests,
       updatedAt: serverTimestamp()
     });
+    syncToSheet({
+      type: "rsvp",
+      name,
+      guests,
+      availability: [...selectedBlocks].map(blockLabel).join(", ")
+    });
     setStatus(pollStatus, "Got it — thanks! You can update anytime by resubmitting.", "ok");
   } catch (e) {
     console.error(e);
@@ -277,6 +311,7 @@ document.getElementById("submit-potluck").addEventListener("click", async () => 
       item,
       createdAt: serverTimestamp()
     });
+    syncToSheet({ type: "potluck", name, item });
     potluckItemInput.value = "";
     dupeWarning.classList.remove("show");
     setStatus(potluckStatus, "Added! Thanks for bringing that.", "ok");
@@ -289,8 +324,9 @@ document.getElementById("submit-potluck").addEventListener("click", async () => 
 });
 
 // ---------------------------------------------------------------------------
-// 4. CONTACT INFO (write-only — never read back on the site, hosts pull it
-//    from the Firebase Console when it's time to send a heads-up)
+// 4. CONTACT INFO (write-only — never read back on the site). Saved to
+//    Firestore as the reliable copy, and best-effort mirrored into a
+//    Google Sheet for easy access when it's time to send a heads-up.
 // ---------------------------------------------------------------------------
 const contactNameInput = document.getElementById("contact-name");
 const contactEmailInput = document.getElementById("contact-email");
@@ -320,6 +356,7 @@ document.getElementById("submit-contact").addEventListener("click", async () => 
       phone,
       createdAt: serverTimestamp()
     });
+    syncToSheet({ type: "contact", name, email, phone });
     contactEmailInput.value = "";
     contactPhoneInput.value = "";
     setStatus(contactStatus, "Got it — thanks!", "ok");
