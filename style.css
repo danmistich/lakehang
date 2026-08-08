@@ -88,6 +88,20 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
 
 .callout-text a:hover { color: var(--accent); }
 
+.callout-body { flex: 1; min-width: 0; }
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.logo-row a { display: block; line-height: 0; }
+.logo-row a:hover { opacity: 0.75; }
+
+.logo { height: 26px; width: auto; display: block; }
+
 #who-coming { margin-top: -8px; }
 
 .spotify-embed {
