@@ -53,11 +53,10 @@ Alternatives that work just as well for a static site like this: drag-and-drop t
 
 ## 3. Fill in the remaining placeholders
 
-Three small placeholders in [`index.html`](index.html) need real values (search for `REPLACE_WITH` / `YOUR_SPOTIFY_PLAYLIST_ID`):
+Two small placeholders in [`index.html`](index.html) still need real values (search for `REPLACE_WITH`) — the Spotify playlist is already wired up:
 
-1. **Spotify playlist embed** — create a real playlist in Spotify, make it collaborative (playlist menu → "Make collaborative") so guests can add songs from the Spotify app directly, then get its share link (Share → Copy link to playlist). It looks like `https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M`. The part after `/playlist/` and before any `?` is the playlist ID — paste it into the `iframe src` in `index.html`, replacing `YOUR_SPOTIFY_PLAYLIST_ID`.
-2. **Team Human Patreon link** — replace `REPLACE_WITH_TEAM_HUMAN_PATREON_URL` with the real Patreon URL.
-3. **Groucho link** — replace `REPLACE_WITH_GROUCHO_URL` with Groucho's real site/app URL.
+1. **Team Human Patreon link** — replace `REPLACE_WITH_TEAM_HUMAN_PATREON_URL` with the real Patreon URL.
+2. **Groucho link** — replace `REPLACE_WITH_GROUCHO_URL` with Groucho's real site/app URL.
 
 ## 4. Test it
 
