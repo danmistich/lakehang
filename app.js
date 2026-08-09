@@ -163,6 +163,16 @@ function normalizeName(name) {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+// Display-only — "Dan Mistich" -> "Dan M." Storage (doc IDs, Sheets sync,
+// the host-only contacts list) still keeps full names; this only shortens
+// what shows up in public-facing UI now that the link isn't just going to
+// a Discord full of friends anymore.
+function shortName(fullName) {
+  const parts = (fullName || "").trim().split(/\s+/);
+  if (parts.length < 2) return parts[0] || "";
+  return `${parts[0]} ${parts[parts.length - 1][0]}.`;
+}
+
 function renderResults(responses) {
   lastResponses = responses;
 
@@ -203,7 +213,7 @@ function renderResults(responses) {
         whoSpan.className = "who";
         cell.appendChild(whoSpan);
       }
-      whoSpan.textContent = names[key].join(", ");
+      whoSpan.textContent = names[key].map(shortName).join(", ");
     } else if (whoSpan) {
       whoSpan.remove();
     }
@@ -218,7 +228,7 @@ function renderResults(responses) {
 
   whoComing.textContent = responses.length === 0
     ? ""
-    : `Coming so far: ${responses.map(r => r.name).join(", ")}`;
+    : `Coming so far: ${responses.map(r => shortName(r.name)).join(", ")}`;
 }
 
 buildInputGrid();
@@ -309,7 +319,7 @@ function renderPotluck(items) {
   potluckEmpty.style.display = items.length === 0 ? "block" : "none";
   items.forEach(entry => {
     const li = document.createElement("li");
-    li.innerHTML = `<span class="potluck-item">${escapeHtml(entry.item)}</span><span class="potluck-by">${escapeHtml(entry.name)}</span>`;
+    li.innerHTML = `<span class="potluck-item">${escapeHtml(entry.item)}</span><span class="potluck-by">${escapeHtml(shortName(entry.name))}</span>`;
     potluckList.appendChild(li);
   });
 }
