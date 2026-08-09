@@ -209,11 +209,9 @@ function renderResults(responses) {
     }
   });
 
-  if (responses.length === 0) {
-    responderCount.textContent = "No responses yet — be the first!";
-  } else {
-    responderCount.textContent = `${responses.length} ${responses.length === 1 ? "person has" : "people have"} responded. Best overlap highlighted below.`;
-  }
+  responderCount.textContent = responses.length === 0
+    ? "No one's headed to the lake yet — be the first!"
+    : "Best overlap highlighted below.";
 
   const totalHeadcount = responses.reduce((sum, r) => sum + 1 + (Number(r.guests) || 0), 0);
   headcountNumber.textContent = totalHeadcount;
