@@ -46,10 +46,9 @@
   }
 
   .cell {
-    padding: 0.32in 0.3in;
+    padding: 0.26in 0.24in;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     border-right: 1px dashed #999;
     border-bottom: 1px dashed #999;
   }
@@ -59,47 +58,65 @@
   .cell:nth-child(4) { border-right: none; border-bottom: none; }
 
   .eyebrow {
-    margin: 0 0 0.1in;
-    font: 700 9px/1 'IBM Plex Mono', monospace;
-    letter-spacing: 0.18em;
+    margin: 0 0 0.06in;
+    font: 700 8px/1 'IBM Plex Mono', monospace;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: #b3311f;
   }
 
   h1 {
     margin: 0;
-    font: 800 26px/1.05 'Space Grotesk', sans-serif;
+    font: 800 22px/1.04 'Space Grotesk', sans-serif;
     letter-spacing: -0.01em;
     text-transform: uppercase;
   }
 
   .date-line {
-    margin: 0.1in 0 0;
-    font: 700 13px/1.2 'IBM Plex Mono', monospace;
+    margin: 0.08in 0 0;
+    font: 700 11px/1.2 'IBM Plex Mono', monospace;
     letter-spacing: 0.01em;
   }
 
-  .cta-line {
-    margin: 0.05in 0 0;
-    font: 700 10.5px/1.35 'IBM Plex Mono', monospace;
-    color: #b3311f;
+  .rule {
+    border: none;
+    border-top: 1.5px solid #000;
+    margin: 0.1in 0;
   }
 
-  .cell-main {
+  .intro-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.14in;
+  }
+
+  .intro {
+    margin: 0;
+    font: 400 8.5px/1.4 'IBM Plex Mono', monospace;
+    max-width: 2.2in;
+  }
+
+  .phone-accent {
+    flex: none;
+    height: 0.62in;
+    width: auto;
+  }
+
+  .main {
     flex: 1;
     display: flex;
-    align-items: center;
-    gap: 0.22in;
-    margin-top: 0.15in;
-    width: 100%;
+    align-items: flex-start;
+    gap: 0.18in;
+    margin-top: 0.12in;
   }
 
+  .qr-block { flex: none; text-align: center; }
+
   .qr-box {
-    flex: none;
-    border: 2px solid #000;
-    padding: 6px;
-    width: 1.15in;
-    height: 1.15in;
+    border: 1.5px solid #000;
+    padding: 5px;
+    width: 0.95in;
+    height: 0.95in;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -107,76 +124,143 @@
 
   .qr-box img { width: 100%; height: 100%; display: block; }
 
-  .side-copy {
-    font: 400 9.5px/1.4 'IBM Plex Mono', monospace;
-    color: #4a4640;
+  .qr-caption {
+    margin-top: 4px;
+    font: 700 6.5px/1.2 'IBM Plex Mono', monospace;
   }
 
-  .qr-caption {
-    margin: 0.08in 0 0;
-    font: 700 9px/1.3 'IBM Plex Mono', monospace;
-    letter-spacing: 0.01em;
+  .side-copy { font: 400 7.5px/1.35 'IBM Plex Mono', monospace; }
+  .side-copy p { margin: 0 0 0.06in; }
+  .side-copy p:last-child { margin-bottom: 0; }
+  .side-copy .label {
+    font: 700 6.5px 'IBM Plex Mono', monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1px;
   }
+
+  footer {
+    margin-top: 0.1in;
+    padding-top: 0.06in;
+    border-top: 1px solid #000;
+    font: 400 6.5px/1.4 'IBM Plex Mono', monospace;
+  }
+
+  footer .mark { font-weight: 700; }
 </style>
 </head>
 <body>
 
 <div class="sheet">
 
+  <!-- repeat block x4 -->
   <div class="cell">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
-    <p class="cta-line">Pick the times that work for you.</p>
-    <div class="cell-main">
-      <div class="qr-box">
-        <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
-      </div>
-      <p class="side-copy">Analog connection on Chicago&rsquo;s lakefront. Scan to find the signal.</p>
+    <hr class="rule">
+    <div class="intro-row">
+      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
-    <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+    <div class="main">
+      <div class="qr-block">
+        <div class="qr-box">
+          <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
+        </div>
+        <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+      </div>
+      <div class="side-copy">
+        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+      </div>
+    </div>
+    <footer>
+      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+    </footer>
   </div>
 
   <div class="cell">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
-    <p class="cta-line">Pick the times that work for you.</p>
-    <div class="cell-main">
-      <div class="qr-box">
-        <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
-      </div>
-      <p class="side-copy">Analog connection on Chicago&rsquo;s lakefront. Scan to find the signal.</p>
+    <hr class="rule">
+    <div class="intro-row">
+      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
-    <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+    <div class="main">
+      <div class="qr-block">
+        <div class="qr-box">
+          <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
+        </div>
+        <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+      </div>
+      <div class="side-copy">
+        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+      </div>
+    </div>
+    <footer>
+      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+    </footer>
   </div>
 
   <div class="cell">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
-    <p class="cta-line">Pick the times that work for you.</p>
-    <div class="cell-main">
-      <div class="qr-box">
-        <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
-      </div>
-      <p class="side-copy">Analog connection on Chicago&rsquo;s lakefront. Scan to find the signal.</p>
+    <hr class="rule">
+    <div class="intro-row">
+      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
-    <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+    <div class="main">
+      <div class="qr-block">
+        <div class="qr-box">
+          <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
+        </div>
+        <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+      </div>
+      <div class="side-copy">
+        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+      </div>
+    </div>
+    <footer>
+      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+    </footer>
   </div>
 
   <div class="cell">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
-    <p class="cta-line">Pick the times that work for you.</p>
-    <div class="cell-main">
-      <div class="qr-box">
-        <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
-      </div>
-      <p class="side-copy">Analog connection on Chicago&rsquo;s lakefront. Scan to find the signal.</p>
+    <hr class="rule">
+    <div class="intro-row">
+      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
-    <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+    <div class="main">
+      <div class="qr-block">
+        <div class="qr-box">
+          <img src="assets/flyer-qr.svg" alt="QR code linking to the Lake Michigan Hang site">
+        </div>
+        <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
+      </div>
+      <div class="side-copy">
+        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+      </div>
+    </div>
+    <footer>
+      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+    </footer>
   </div>
 
 </div>
