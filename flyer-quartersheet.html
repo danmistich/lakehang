@@ -35,8 +35,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    font-family: 'IBM Plex Mono', monospace;
-    color: #000;
     background: #fff;
     border: 1px solid #000;
   }
@@ -45,60 +43,76 @@
     .sheet { border: none; }
   }
 
-  .cell {
-    padding: 0.26in 0.24in;
-    display: flex;
-    flex-direction: column;
+  .quad {
+    width: 4.25in;
+    height: 5.5in;
+    overflow: hidden;
+    position: relative;
     border-right: 1px dashed #999;
     border-bottom: 1px dashed #999;
   }
 
-  .cell:nth-child(2) { border-right: none; }
-  .cell:nth-child(3) { border-bottom: none; }
-  .cell:nth-child(4) { border-right: none; border-bottom: none; }
+  .quad:nth-child(2) { border-right: none; }
+  .quad:nth-child(3) { border-bottom: none; }
+  .quad:nth-child(4) { border-right: none; border-bottom: none; }
+
+  /* ---- exact flyer.html page styles, unchanged, scaled 50% via transform ---- */
+  .page {
+    width: 8.5in;
+    height: 11in;
+    background: #fff;
+    color: #000;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 0.65in 0.6in;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.5);
+    transform-origin: top left;
+  }
 
   .eyebrow {
-    margin: 0 0 0.06in;
-    font: 700 8px/1 'IBM Plex Mono', monospace;
-    letter-spacing: 0.16em;
+    margin: 0 0 0.25in;
+    font: 700 15px/1 'IBM Plex Mono', monospace;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #b3311f;
   }
 
   h1 {
     margin: 0;
-    font: 800 22px/1.04 'Space Grotesk', sans-serif;
+    font: 800 66px/0.98 'Space Grotesk', sans-serif;
     letter-spacing: -0.01em;
     text-transform: uppercase;
   }
 
   .date-line {
-    margin: 0.08in 0 0;
-    font: 700 11px/1.2 'IBM Plex Mono', monospace;
-    letter-spacing: 0.01em;
+    margin: 0.22in 0 0;
+    font: 700 26px/1.2 'IBM Plex Mono', monospace;
+    letter-spacing: 0.02em;
   }
 
   .rule {
     border: none;
-    border-top: 1.5px solid #000;
-    margin: 0.1in 0;
+    border-top: 3px solid #000;
+    margin: 0.22in 0;
   }
 
   .intro-row {
     display: flex;
     align-items: flex-start;
-    gap: 0.14in;
+    gap: 0.35in;
   }
 
   .intro {
     margin: 0;
-    font: 400 8.5px/1.4 'IBM Plex Mono', monospace;
-    max-width: 2.2in;
+    font: 400 17px/1.55 'IBM Plex Mono', monospace;
+    max-width: 5.4in;
   }
+
+  .intro + .intro { margin-top: 0.18in; }
 
   .phone-accent {
     flex: none;
-    height: 0.62in;
+    height: 1.3in;
     width: auto;
   }
 
@@ -106,17 +120,20 @@
     flex: 1;
     display: flex;
     align-items: flex-start;
-    gap: 0.18in;
-    margin-top: 0.12in;
+    gap: 0.5in;
+    margin-top: 0.3in;
   }
 
-  .qr-block { flex: none; text-align: center; }
+  .qr-block {
+    flex: none;
+    text-align: center;
+  }
 
   .qr-box {
-    border: 1.5px solid #000;
-    padding: 5px;
-    width: 0.95in;
-    height: 0.95in;
+    border: 3px solid #000;
+    padding: 14px;
+    width: 2.4in;
+    height: 2.4in;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,26 +142,31 @@
   .qr-box img { width: 100%; height: 100%; display: block; }
 
   .qr-caption {
-    margin-top: 4px;
-    font: 700 6.5px/1.2 'IBM Plex Mono', monospace;
+    margin-top: 10px;
+    font: 700 13px/1.3 'IBM Plex Mono', monospace;
+    letter-spacing: 0.03em;
   }
 
-  .side-copy { font: 400 7.5px/1.35 'IBM Plex Mono', monospace; }
-  .side-copy p { margin: 0 0 0.06in; }
+  .side-copy {
+    font: 400 16px/1.6 'IBM Plex Mono', monospace;
+  }
+
+  .side-copy p { margin: 0 0 0.16in; }
   .side-copy p:last-child { margin-bottom: 0; }
+
   .side-copy .label {
-    font: 700 6.5px 'IBM Plex Mono', monospace;
-    letter-spacing: 0.06em;
+    font: 700 13px 'IBM Plex Mono', monospace;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     display: block;
-    margin-bottom: 1px;
+    margin-bottom: 4px;
   }
 
   footer {
-    margin-top: 0.1in;
-    padding-top: 0.06in;
+    margin-top: 0.22in;
+    padding-top: 0.15in;
     border-top: 1px solid #000;
-    font: 400 6.5px/1.4 'IBM Plex Mono', monospace;
+    font: 400 12.5px/1.6 'IBM Plex Mono', monospace;
   }
 
   footer .mark { font-weight: 700; }
@@ -153,15 +175,13 @@
 <body>
 
 <div class="sheet">
-
-  <!-- repeat block x4 -->
-  <div class="cell">
+  <div class="quad"><div class="page">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
     <hr class="rule">
     <div class="intro-row">
-      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <p class="intro">Analog connection on Chicago's lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
       <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
     <div class="main">
@@ -172,23 +192,23 @@
         <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
       </div>
       <div class="side-copy">
-        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
-        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
-        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+        <p><span class="label">Vote on a time</span>Pick every block that works for you &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add your name and what you're bringing to a shared list, so we don't end up with five bags of chips.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone number or email for a heads-up once the day and time are locked in.</p>
       </div>
     </div>
     <footer>
-      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+      <span>&sect; An event organized by Chicagoans connected through <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
     </footer>
-  </div>
+  </div></div>
 
-  <div class="cell">
+  <div class="quad"><div class="page">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
     <hr class="rule">
     <div class="intro-row">
-      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <p class="intro">Analog connection on Chicago's lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
       <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
     <div class="main">
@@ -199,23 +219,23 @@
         <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
       </div>
       <div class="side-copy">
-        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
-        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
-        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+        <p><span class="label">Vote on a time</span>Pick every block that works for you &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add your name and what you're bringing to a shared list, so we don't end up with five bags of chips.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone number or email for a heads-up once the day and time are locked in.</p>
       </div>
     </div>
     <footer>
-      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+      <span>&sect; An event organized by Chicagoans connected through <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
     </footer>
-  </div>
+  </div></div>
 
-  <div class="cell">
+  <div class="quad"><div class="page">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
     <hr class="rule">
     <div class="intro-row">
-      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <p class="intro">Analog connection on Chicago's lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
       <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
     <div class="main">
@@ -226,23 +246,23 @@
         <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
       </div>
       <div class="side-copy">
-        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
-        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
-        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+        <p><span class="label">Vote on a time</span>Pick every block that works for you &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add your name and what you're bringing to a shared list, so we don't end up with five bags of chips.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone number or email for a heads-up once the day and time are locked in.</p>
       </div>
     </div>
     <footer>
-      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+      <span>&sect; An event organized by Chicagoans connected through <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
     </footer>
-  </div>
+  </div></div>
 
-  <div class="cell">
+  <div class="quad"><div class="page">
     <p class="eyebrow">An Invitation</p>
     <h1>Summer Potluck and Hang on Lake Michigan</h1>
     <p class="date-line">FRI&ndash;SUN &middot; AUG 21&ndash;23</p>
     <hr class="rule">
     <div class="intro-row">
-      <p class="intro">Analog connection on Chicago&rsquo;s lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
+      <p class="intro">Analog connection on Chicago's lakefront. An off-screen gathering for local weirdos, artists, and good humans. Scan to find the signal.</p>
       <img src="assets/silly-phone.png" alt="A phone with a prohibition symbol over it, captioned Battery: Who Cares" class="phone-accent">
     </div>
     <div class="main">
@@ -253,16 +273,15 @@
         <p class="qr-caption">chicagogroucholakehang.netlify.app</p>
       </div>
       <div class="side-copy">
-        <p><span class="label">Vote on a time</span>Pick every block that works &mdash; the site shows where the group overlaps.</p>
-        <p><span class="label">Bring something</span>Add what you&rsquo;re bringing to a shared list.</p>
-        <p><span class="label">Stay in the loop</span>Leave a phone/email for a heads-up once it&rsquo;s locked in.</p>
+        <p><span class="label">Vote on a time</span>Pick every block that works for you &mdash; the site shows where the group overlaps.</p>
+        <p><span class="label">Bring something</span>Add your name and what you're bringing to a shared list, so we don't end up with five bags of chips.</p>
+        <p><span class="label">Stay in the loop</span>Leave a phone number or email for a heads-up once the day and time are locked in.</p>
       </div>
     </div>
     <footer>
-      <span>&sect; From the people behind <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
+      <span>&sect; An event organized by Chicagoans connected through <span class="mark">Team Human</span> (teamhuman.fm) and <span class="mark">Groucho</span> (mygroucho.club)</span>
     </footer>
-  </div>
-
+  </div></div>
 </div>
 
 </body>

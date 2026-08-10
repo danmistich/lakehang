@@ -43,4 +43,5 @@ Important nuance if you touch this — **the two things Host Access unlocks have
 - No package.json / build tooling on purpose — keep it plain HTML/CSS/JS so it stays trivial to deploy (GitHub Pages / Netlify / Vercel, all zero-config for a static folder).
 - If you touch `firestore.rules`, remind whoever's testing to also re-paste the updated rules into the Firebase Console — this repo doesn't auto-deploy rules.
 - The live Firebase project config lives in `app.js` (top of file) — it's intentionally public/non-secret, safe to commit.
+- The site deploys to both GitHub Pages (`danmistich.github.io/lakehang`) and Netlify (`chicagogroucholakehang.netlify.app`, the canonical public-facing domain). Every shipped change must actually land on both — `git push` from this environment fails (no cached credentials), so pushes go through GitHub Desktop. Always `git fetch origin` and diff `origin/main..HEAD` after committing to confirm nothing is sitting unpushed before calling a fix "live."
 - See `README.md` for full setup/deploy steps.
