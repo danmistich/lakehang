@@ -66,98 +66,17 @@ function syncToSheet(payload) {
 }
 
 // ---------------------------------------------------------------------------
-// 2. AVAILABILITY POLL
+// 2. RSVP — date/time is confirmed (Sat, Aug 22, 5pm), so this is just a
+// headcount: name + guests, no time-block voting.
 // ---------------------------------------------------------------------------
-const DAYS = [
-  { key: "fri", label: "Fri", date: "Aug 21" },
-  { key: "sat", label: "Sat", date: "Aug 22" },
-  { key: "sun", label: "Sun", date: "Aug 23" }
-];
-const TIMES = [
-  { key: "morning", label: "Morning" },
-  { key: "afternoon", label: "Afternoon" },
-  { key: "evening", label: "Evening" }
-];
-const BLOCK_KEYS = DAYS.flatMap(d => TIMES.map(t => `${d.key}_${t.key}`));
-
 let isHost = false;
-let lastResponses = [];
 
-function blockLabel(key) {
-  const [dayKey, timeKey] = key.split("_");
-  const day = DAYS.find(d => d.key === dayKey);
-  const time = TIMES.find(t => t.key === timeKey);
-  return `${day.label} ${time.label}`;
-}
-
-const inputGrid = document.getElementById("input-grid");
-const resultsGrid = document.getElementById("results-grid");
 const pollNameInput = document.getElementById("poll-name");
 const pollGuestsInput = document.getElementById("poll-guests");
 const pollStatus = document.getElementById("poll-status");
 const responderCount = document.getElementById("responder-count");
 const headcountNumber = document.getElementById("headcount-number");
 const whoComing = document.getElementById("who-coming");
-
-let selectedBlocks = new Set();
-
-function buildHeaderRow(container) {
-  const corner = document.createElement("div");
-  container.appendChild(corner);
-  DAYS.forEach(d => {
-    const head = document.createElement("div");
-    head.className = "head";
-    head.innerHTML = `<span class="head-day">${d.label}</span><span class="head-date">${d.date}</span>`;
-    container.appendChild(head);
-  });
-}
-
-function buildInputGrid() {
-  inputGrid.innerHTML = "";
-  buildHeaderRow(inputGrid);
-  TIMES.forEach(t => {
-    const rowLabel = document.createElement("div");
-    rowLabel.className = "row-label";
-    rowLabel.textContent = t.label;
-    inputGrid.appendChild(rowLabel);
-    DAYS.forEach(d => {
-      const key = `${d.key}_${t.key}`;
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.textContent = `${d.label} ${t.label}`;
-      cell.dataset.key = key;
-      cell.addEventListener("click", () => {
-        if (selectedBlocks.has(key)) {
-          selectedBlocks.delete(key);
-          cell.classList.remove("selected");
-        } else {
-          selectedBlocks.add(key);
-          cell.classList.add("selected");
-        }
-      });
-      inputGrid.appendChild(cell);
-    });
-  });
-}
-
-function buildResultsGridSkeleton() {
-  resultsGrid.innerHTML = "";
-  buildHeaderRow(resultsGrid);
-  TIMES.forEach(t => {
-    const rowLabel = document.createElement("div");
-    rowLabel.className = "row-label";
-    rowLabel.textContent = t.label;
-    resultsGrid.appendChild(rowLabel);
-    DAYS.forEach(d => {
-      const key = `${d.key}_${t.key}`;
-      const cell = document.createElement("div");
-      cell.className = "cell result none";
-      cell.dataset.key = key;
-      cell.innerHTML = `<span class="count">0</span>`;
-      resultsGrid.appendChild(cell);
-    });
-  });
-}
 
 function normalizeName(name) {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
@@ -174,54 +93,9 @@ function shortName(fullName) {
 }
 
 function renderResults(responses) {
-  lastResponses = responses;
-
-  const counts = {};
-  const names = {};
-  BLOCK_KEYS.forEach(k => { counts[k] = 0; names[k] = []; });
-
-  responses.forEach(r => {
-    const blocks = r.blocks || {};
-    BLOCK_KEYS.forEach(k => {
-      if (blocks[k]) {
-        counts[k]++;
-        names[k].push(r.name);
-      }
-    });
-  });
-
-  const maxCount = Math.max(0, ...Object.values(counts));
-
-  BLOCK_KEYS.forEach(key => {
-    const cell = resultsGrid.querySelector(`.cell[data-key="${key}"]`);
-    if (!cell) return;
-    const n = counts[key];
-    cell.querySelector(".count").textContent = n;
-    cell.classList.remove("none", "some", "best");
-    if (n === 0) {
-      cell.classList.add("none");
-    } else if (maxCount > 0 && n === maxCount) {
-      cell.classList.add("best");
-    } else {
-      cell.classList.add("some");
-    }
-
-    let whoSpan = cell.querySelector(".who");
-    if (isHost) {
-      if (!whoSpan) {
-        whoSpan = document.createElement("span");
-        whoSpan.className = "who";
-        cell.appendChild(whoSpan);
-      }
-      whoSpan.textContent = names[key].map(shortName).join(", ");
-    } else if (whoSpan) {
-      whoSpan.remove();
-    }
-  });
-
   responderCount.textContent = responses.length === 0
-    ? "No one's headed to the lake yet — be the first!"
-    : "Best overlap highlighted below.";
+    ? "No one's confirmed yet — be the first!"
+    : "Thanks for confirming!";
 
   const totalHeadcount = responses.reduce((sum, r) => sum + 1 + (Number(r.guests) || 0), 0);
   headcountNumber.textContent = totalHeadcount;
@@ -231,32 +105,21 @@ function renderResults(responses) {
     : `Coming so far: ${responses.map(r => shortName(r.name)).join(", ")}`;
 }
 
-buildInputGrid();
-buildResultsGridSkeleton();
-
 const rsvpsQuery = query(collection(db, "rsvps"), orderBy("updatedAt", "asc"));
 onSnapshot(rsvpsQuery, snapshot => {
   const responses = snapshot.docs.map(d => d.data());
   renderResults(responses);
 }, err => {
-  console.error("Failed to load availability:", err);
+  console.error("Failed to load RSVPs:", err);
   responderCount.textContent = "Couldn't load responses — check your Firebase setup.";
 });
 
 document.getElementById("submit-availability").addEventListener("click", async () => {
-  const rawName = pollNameInput.value;
-  const name = rawName.trim();
+  const name = pollNameInput.value.trim();
   if (!name) {
     setStatus(pollStatus, "Add your name first!", "err");
     return;
   }
-  if (selectedBlocks.size === 0) {
-    setStatus(pollStatus, "Pick at least one time block.", "err");
-    return;
-  }
-
-  const blocks = {};
-  BLOCK_KEYS.forEach(k => { blocks[k] = selectedBlocks.has(k); });
 
   let guests = parseInt(pollGuestsInput.value, 10);
   if (!Number.isFinite(guests) || guests < 0) guests = 0;
@@ -268,17 +131,11 @@ document.getElementById("submit-availability").addEventListener("click", async (
     const docId = normalizeName(name);
     await setDoc(doc(db, "rsvps", docId), {
       name,
-      blocks,
       guests,
       updatedAt: serverTimestamp()
     });
-    syncToSheet({
-      type: "rsvp",
-      name,
-      guests,
-      availability: [...selectedBlocks].map(blockLabel).join(", ")
-    });
-    setStatus(pollStatus, "Got it — thanks! You can update anytime by resubmitting.", "ok");
+    syncToSheet({ type: "rsvp", name, guests });
+    setStatus(pollStatus, "You're confirmed — thanks! Resubmit anytime to update your guest count.", "ok");
   } catch (e) {
     console.error(e);
     setStatus(pollStatus, "Something went wrong saving that. Try again.", "err");
@@ -461,8 +318,6 @@ onAuthStateChanged(auth, async user => {
   isHost = recognized;
   hostAccessBtns.forEach(b => b.textContent = recognized ? "Sign out" : "Host Access");
   hostAccessStatuses.forEach(s => s.textContent = recognized ? `Signed in as ${user.email}.` : "");
-  resultsGrid.classList.toggle("host-mode", recognized);
-  renderResults(lastResponses);
 
   if (unsubscribeContacts) {
     unsubscribeContacts();
