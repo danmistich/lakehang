@@ -48,8 +48,9 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
 }
 
 .date-line {
-  margin: 18px 0 0;
-  font: 700 15px/1.4 'IBM Plex Mono', monospace;
+  margin: 20px 0 0;
+  font: 800 26px/1.2 'Space Grotesk', sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .tbd-line {
