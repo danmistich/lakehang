@@ -65,6 +65,14 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
   color: var(--muted);
 }
 
+.deadline-line a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1.5px;
+}
+
+.deadline-line a:hover { color: var(--accent); }
+
 .intro {
   margin: 16px 0 0;
   font: 400 14px/1.6 'IBM Plex Mono', monospace;
